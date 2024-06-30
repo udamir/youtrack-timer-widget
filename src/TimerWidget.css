@@ -1,0 +1,33 @@
+.timer-widget {
+  color: var(--ring-text-color);
+}
+
+.timer-widget-issue {
+  position: relative;
+  overflow-x: hidden;
+  margin: 0 -4px;
+  padding: 4px;
+  line-height: 20px;
+}
+
+.timer-widget-issue-info {
+  display: inline-block;
+  /* padding-right: calc(2* var(--ring-unit));
+  padding-left: calc(3* var(--ring-unit)); */
+}
+
+.timer-widget-issue-id {
+  white-space: nowrap;
+  padding-right: 5px;
+}
+
+.timer-widget-link {
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-transition: color 0.15s ease-out;
+  transition: color 0.15s ease-out;
+  -webkit-transition: color var(--ring-fast-ease);
+  transition: color var(--ring-fast-ease);
+  color: #0f5b99;
+  color: var(--ring-link-color);
+}

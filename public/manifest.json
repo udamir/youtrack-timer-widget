@@ -1,0 +1,25 @@
+{
+  "key": "youtrack-timer-widget",
+  "version": "0.0.1",
+  "name": "Timer Widget",
+  "description": "Displays current Timer added to issues in YouTrack.",
+  "applicationName": "YouTrack",
+  "author": "Damir Yusipov",
+  "iconUrl": "timer.png",
+  "dependencies": {
+    "YouTrack": ">=2019.1.51078",
+    "Hub": ">=2018.2"
+  },
+  "products": {
+    "YouTrack": ">=2019.1",
+    "Hub": ">=2018.2"
+  },
+  "capabilities": {
+    "topNavigation": true
+  },
+  "view": {
+    "defaultWidth": 2,
+    "defaultHeight": 1,
+    "fadeOut": false
+  }
+}

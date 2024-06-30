@@ -1,0 +1,61 @@
+.user-avatar {
+  width: 164px;
+  height: 164px;
+}
+
+.timer-widget {
+  color: var(--ring-text-color);
+  --search-context-width: calc(var(--ring-unit) * 12);
+}
+
+.timer-widget-issue {
+  position: relative;
+  overflow-x: hidden;
+  margin: 0 -4px;
+  padding: 4px;
+  line-height: 20px;
+}
+
+.timer-widget-issue-info {
+  display: inline-block;
+  padding-right: calc(2* var(--ring-unit));
+  padding-left: calc(3* var(--ring-unit));
+}
+
+.timer-widget-issue-id {
+  white-space: nowrap;
+}
+
+.timer-widget-link {
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-transition: color 0.15s ease-out;
+  transition: color 0.15s ease-out;
+  -webkit-transition: color var(--ring-fast-ease);
+  transition: color var(--ring-fast-ease);
+  color: #0f5b99;
+  color: var(--ring-link-color);
+}
+
+
+
+.timer-widget-stop-button {
+  background-color: var(--ring-content-background-color);
+  border: 0;
+  border-radius: var(--ring-border-radius);
+  box-shadow: inset 0 0 0 1px var(--ring-borders-color);
+  box-sizing: border-box;
+  color: var(--ring-text-color);
+  cursor: pointer;
+  display: inline-block;
+  font-family: var(--ring-font-family);
+  font-size: var(--ring-button-font-size);
+  height: var(--ring-button-height);
+  line-height: var(--ring-button-height);
+  margin: 0;
+  outline: 0;
+  padding: 0 16px;
+  position: relative;
+  text-decoration: none;
+  transition: color var(--ring-ease), background-color var(--ring-ease), box-shadow var(--ring-ease);
+}
