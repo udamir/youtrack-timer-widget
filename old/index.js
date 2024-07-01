@@ -19,13 +19,13 @@ class TimerWidget {
         this.youTrack = services[0];
         this.userId = user.login;
         
-        const query = encodeURIComponent(`#${user.login} has: {Active Timers}  Active Timers: -{?}`);
+        const query = encodeURIComponent(`'${user.login}:' has: {Active Timers} Active Timers: -{?}`);
         const activeTimers = encodeURIComponent(`Active Timers`);
 
         const timerIssues = await this.dashboardApi.fetch(this.youTrack.id,`api/issues?query=${query}&fields=idReadable,summary,project(id),customFields(id,name,value(name))&customFields=${activeTimers}&customFields=Timer&$top=1`);
-        // console.log(timerIssues)
         
         if (!timerIssues.length) {
+            this.timer = null;
             return this.renderTimerDetails();
         }
         const timerField = timerIssues[0].customFields.find(({name}) => name === "Timer");
@@ -113,13 +113,13 @@ class TimerWidget {
 
     async updateTimer() {
         const { issueId, fieldId } = this.timer
-        const response = await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${this.timerFieldId}?fields=value(name)&muteUpdateNotifications=true`, {
+        const response = await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${this.timerFieldId}?fields=value(name)`, {
             method: 'POST',
             body: { value: { name: this.timer.activity } }
         })
         
         const activeTimers = await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${fieldId}?fields=value`);
-        console.log("activeTimers", activeTimers);
+        console.debug("activeTimers", activeTimers);
 
         this.timer = {
             ...this.timer,
@@ -134,7 +134,7 @@ class TimerWidget {
         const activeTimers = await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${fieldId}?fields=value`);
         const updatedTimers = this.removeTimer(activeTimers.value)
 
-        await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${fieldId}?fields=value(name)&muteUpdateNotifications=true`, {
+        await this.dashboardApi.fetch(this.youTrack.id, `api/issues/${issueId}/customFields/${fieldId}?fields=value(name)`, {
             method: 'POST',
             body: { value: updatedTimers }
         })

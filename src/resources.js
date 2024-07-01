@@ -8,8 +8,8 @@ export const getUser = (api) => {
   return api.fetchHub('api/rest/users/me?fields=login');   
 }
 
-export const getService = async (api) => {
-  const { services } = await api.fetchHub('api/rest/services?query=applicationName:YouTrack');
+export const getService = async (api, serviceName) => {
+  const { services } = await api.fetchHub(`api/rest/services?query=applicationName:${serviceName}`);
   return services[0];
 }
 
@@ -18,7 +18,7 @@ export const getProjectWorkItems = async (fetchApi, projectId) => {
 }
 
 export const getActiveTimer = async (fetchApi, userId, baseUrl) => {
-  const query = encodeURIComponent(`#${userId} has: {Active Timers} Active Timers: -{?}`);
+  const query = encodeURIComponent(`'${userId}:' has: {Active Timers} Active Timers: -{?}`);
   const activeTimers = encodeURIComponent(`Active Timers`);
   
   const timerIssues = await fetchApi(`api/issues?query=${query}&fields=idReadable,summary,project(id),customFields(id,name,value(name))&customFields=${activeTimers}&customFields=Timer&$top=1`);

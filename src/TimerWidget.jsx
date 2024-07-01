@@ -1,7 +1,7 @@
 
 import Button from '@jetbrains/ring-ui-built/components/button/button';
 import ButtonSet from '@jetbrains/ring-ui-built/components/button-set/button-set';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { getActiveTimer, getIssueTimers, setIssueActiveTimers, setIssueTimer } from './resources';
 import { parseUserTimer, removeUserTimer } from './utils';
@@ -22,13 +22,13 @@ const TimerWidget = ({ registerWidgetApi, userId, fetchApi, app }) => {
     registerWidgetApi({
       onRefresh: () => loadWidgetData()
     });
-  });
+  }, []);
 
   const updateTimer = async () => {
     await setIssueTimer(fetchApi, timer.issueId, timer.timerFieldId, timer.activity);
 
     const activeTimers = await getIssueTimers(fetchApi, timer.issueId, timer.activeTimersFieldId);
-    setTimer({ ...timer, ...parseUserTimer(activeTimers.value, timer.userId, timer.workItems) });
+    setTimer({ ...timer, ...parseUserTimer(activeTimers.value, userId, timer.workItems) });
   }
 
   const stopTimer = async () => {

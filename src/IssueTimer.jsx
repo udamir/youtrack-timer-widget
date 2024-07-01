@@ -1,5 +1,6 @@
 import Link from '@jetbrains/ring-ui-built/components/link/link';
 import Text from '@jetbrains/ring-ui-built/components/text/text';
+import React from 'react';
 
 import { Timer } from './Timer';
 

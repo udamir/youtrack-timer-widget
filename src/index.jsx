@@ -7,8 +7,7 @@ import { createFetchApi, getService, getUser } from './resources';
 import TimerWidget from './TimerWidget';
 
 DashboardAddons.registerWidget(async (dashboardApi, registerWidgetApi) => {
-
-  const app = await getService(dashboardApi);
+  const app = await getService(dashboardApi, "Youtrack");
   const user = await getUser(dashboardApi);
   const fetchApi = createFetchApi(dashboardApi, app.id);
 

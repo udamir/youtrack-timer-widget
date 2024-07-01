@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { calcSpentTime } from "./utils";
 
 export const Timer = ({ startTime, endTime }) => {
