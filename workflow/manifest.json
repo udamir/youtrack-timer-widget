@@ -1,0 +1,17 @@
+{
+  "name" : "youtrack-timer-workflow",
+  "title" : "youtrack-timer-workflow",
+  "description" : null,
+  "icon" : null,
+  "darkIcon" : null,
+  "vendor" : null,
+  "dependencies" : {
+    "@jetbrains/youtrack-scripting-api" : "^2023.2.21228"
+  },
+  "language" : "JS",
+  "widgets" : [ ],
+  "youtrack" : {
+    "autoAttached" : false,
+    "visual" : false
+  }
+}

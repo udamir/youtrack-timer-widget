@@ -1,7 +1,7 @@
 
 import Button from '@jetbrains/ring-ui-built/components/button/button';
 import ButtonSet from '@jetbrains/ring-ui-built/components/button-set/button-set';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getActiveTimer, getIssueTimers, setIssueActiveTimers, setIssueTimer } from './resources';
 import { parseUserTimer, removeUserTimer } from './utils';
@@ -12,9 +12,21 @@ import { ControlsHeight, ControlsHeightContext } from '@jetbrains/ring-ui-built/
 
 const TimerWidget = ({ registerWidgetApi, userId, fetchApi, app }) => {
   const [timer, setTimer] = useState(null);
+  const currentTimer = useRef();
 
   const loadWidgetData = async () => {
-    setTimer(await getActiveTimer(fetchApi, userId, app.homeUrl));
+    const _timer = await getActiveTimer(fetchApi, userId, app.homeUrl)
+    setTimer(_timer);
+    watchIssueTimer(_timer, 5000);
+  }
+
+  // watch changes of timer
+  const watchIssueTimer = async (watchTimer, interval) => {
+    clearInterval(currentTimer.current);
+    currentTimer.current = watchTimer && setInterval(async () => {
+      const _timer = await getActiveTimer(fetchApi, userId, app.homeUrl, watchTimer);
+      setTimer(_timer);
+    }, interval);
   }
 
   useEffect(() => {
@@ -50,7 +62,7 @@ const TimerWidget = ({ registerWidgetApi, userId, fetchApi, app }) => {
       </div>
     </ControlsHeightContext.Provider>
   ) : (
-    <div>No Timer</div>
+    <div className="timer-widget">No Timer</div>
   )
 }
 

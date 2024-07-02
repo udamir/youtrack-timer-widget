@@ -17,34 +17,40 @@ export const getProjectWorkItems = async (fetchApi, projectId) => {
   return fetchApi(`api/admin/projects/${projectId}/timeTrackingSettings/workItemTypes?fields=id,name`);
 }
 
-export const getActiveTimer = async (fetchApi, userId, baseUrl) => {
+export const findIssueWithTimer = async (fetchApi, userId) => {
   const query = encodeURIComponent(`'${userId}:' has: {Active Timers} Active Timers: -{?}`);
   const activeTimers = encodeURIComponent(`Active Timers`);
   
   const timerIssues = await fetchApi(`api/issues?query=${query}&fields=idReadable,summary,project(id),customFields(id,name,value(name))&customFields=${activeTimers}&customFields=Timer&$top=1`);
   if (!timerIssues.length) {
-      return null;
+    return null;
   }
 
-  const { project, customFields, idReadable: issueId, summary: issueSummary } = timerIssues[0];
+  return timerIssues[0];
+}
+
+export const getActiveTimer = async (fetchApi, userId, baseUrl, oldTimer) => {
+  const issue = await findIssueWithTimer(fetchApi, userId);
+
+  const { project, customFields, idReadable: issueId, summary: issueSummary } = issue;
 
   const timerField = customFields.find(({name}) => name === "Timer");
   const activeTimersField = customFields.find(({name}) => name === "Active Timers");
-  const workItems = await getProjectWorkItems(fetchApi, project.id);
+  const workItems = oldTimer && oldTimer.issueId === issueId ? oldTimer.workItems : await getProjectWorkItems(fetchApi, project.id);
 
   return {
-      timerFieldId: timerField.id,
-      activeTimersFieldId: activeTimersField.id,
-      issueUrl: `${baseUrl}/issue/${issueId}`,
-      issueId,
-      issueSummary,
-      workItems,
-      ...parseUserTimer(activeTimersField.value, userId, workItems),
+    timerFieldId: timerField.id,
+    activeTimersFieldId: activeTimersField.id,
+    issueUrl: `${baseUrl}/issue/${issueId}`,
+    issueId,
+    issueSummary,
+    workItems,
+    ...parseUserTimer(activeTimersField.value, userId, workItems),
   }
 }
 
 export const setIssueTimer = (fetchApi, issueId, timerFieldId, activity) => {
-  return fetchApi(`api/issues/${issueId}/customFields/${timerFieldId}?fields=value(name)&muteUpdateNotifications=true`, {
+  return fetchApi(`api/issues/${issueId}/customFields/${timerFieldId}?fields=value(name)`, {
     method: 'POST',
     body: { value: { name: activity } }
   });
@@ -55,7 +61,7 @@ export const getIssueTimers = (fetchApi, issueId, fieldId) => {
 }
 
 export const setIssueActiveTimers = (fetchApi, issueId, fieldId, timers) => {
-  return fetchApi(`api/issues/${issueId}/customFields/${fieldId}?fields=value(name)&muteUpdateNotifications=true`, {
+  return fetchApi(`api/issues/${issueId}/customFields/${fieldId}?fields=value(name)`, {
     method: 'POST',
     body: { value: timers }
   });
