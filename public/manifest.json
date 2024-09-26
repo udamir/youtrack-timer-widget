@@ -1,6 +1,6 @@
 {
   "key": "youtrack-timer-widget",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Timer Widget",
   "description": "Displays current Timer added to issues in YouTrack.",
   "applicationName": "YouTrack",
